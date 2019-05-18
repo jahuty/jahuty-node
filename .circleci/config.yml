@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/snippets-js
     docker:
-      - image: circleci/node:4.8.2
+      - image: circleci/node:9.9.0
     steps:
       - checkout
       
