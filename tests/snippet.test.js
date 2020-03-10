@@ -50,7 +50,7 @@ describe(".get()", () => {
     });
 
     it("returns snippet if key is defined", () => {
-        Snippet.key = '78e202009659616eceed79c01a75bfe9';
+        Snippet.key = 'kn2Kj5ijmT2pH6ZKqAQyNexUqKeRM4VG6DDgWN1lIcc';
 
         return Snippet.get(1).then((snippet) => {
             expect(snippet.content).toEqual('This is my first snippet!');
