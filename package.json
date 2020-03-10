@@ -1,6 +1,13 @@
 {
+  "name": "@jahuty/snippets",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "jest": "^24.8.0"
+    "jest": "^24.8.0",
+    "xhr-mock": "^2.5.0"
   },
   "scripts": {
     "test": "jest"
