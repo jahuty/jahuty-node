@@ -5,7 +5,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'jahuty.js',
-    library: 'jahuty'
+    library: 'jahuty',
+    libraryTarget: 'umd'
   },
   module: {
     rules: [
