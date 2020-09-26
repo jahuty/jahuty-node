@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.1.2 - 2020-09-26
+
+* Fix [#9](https://github.com/jahuty/jahuty-node/issues/9), `ReferenceError: window is not defined`.
+
 ## 0.1.1 - 2020-09-25
 
 * Change webpack to output Jahuty as UMD, as advised by [authoring libraries](https://webpack.js.org/guides/author-libraries/#expose-the-library).

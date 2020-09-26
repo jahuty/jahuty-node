@@ -60,4 +60,4 @@ export default class Jahuty
 }
 
 Jahuty.ORIGIN  = 'https://api.jahuty.com'
-Jahuty.VERSION = '0.1.1'
+Jahuty.VERSION = '0.1.2'
