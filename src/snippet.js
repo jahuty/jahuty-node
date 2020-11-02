@@ -21,10 +21,16 @@ export default class Snippet
           throw new NotOk(Problem.from(error.response.data));
         } else if (error.request) {
           // The request was made but no response was received.
-
+          console.error(
+            `No response was received from Jahuty for the following request:\n`,
+            error.request
+          );
         } else {
           // Something happened in setting up the request.
-
+          console.error(
+            `Couldn't set up request to Jahuty for the following reason: \n`,
+            error
+          );
         }
       });
   }

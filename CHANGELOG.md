@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.1.4 - 2020-11-02
+
+* Fix [#12](https://github.com/jahuty/jahuty-node/issues/13), stop swallowing exceptions during Axios request setup.
+
 ## 0.1.3 - 2020-09-26
 
 * Fix [#11](https://github.com/jahuty/jahuty-node/issues/11), other classes than `Jahuty` not available.
