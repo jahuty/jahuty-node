@@ -1,9 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.1.5 - 2020-11-02
+
+* Fix [#15](https://github.com/jahuty/jahuty-node/issues/15), fix `TypeError: (e.adapter || u.adapter) is not a function` error by targeting a node build.
+
 ## 0.1.4 - 2020-11-02
 
-* Fix [#12](https://github.com/jahuty/jahuty-node/issues/13), stop swallowing exceptions during Axios request setup.
+* Fix [#13](https://github.com/jahuty/jahuty-node/issues/13), stop swallowing exceptions during Axios request setup.
 
 ## 0.1.3 - 2020-09-26
 
