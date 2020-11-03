@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 0.1.6 - 2020-11-02
+
+* Update README with requirements, installation, usage, errors, and more.
+
 ## 0.1.5 - 2020-11-02
 
 * Fix [#15](https://github.com/jahuty/jahuty-node/issues/15), fix `TypeError: (e.adapter || u.adapter) is not a function` error by targeting a node build.
