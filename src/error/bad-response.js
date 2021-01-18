@@ -1,5 +1,7 @@
-export default class NotOk extends Error
-{
+/**
+ * Thrown when the API responds with a client or server error.
+ */
+export default class BadResponse extends Error {
   constructor(problem) {
     super();
 
