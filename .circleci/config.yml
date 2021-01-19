@@ -27,7 +27,6 @@ jobs:
 
       - run:
           name: Run tests with coverage
-          name: test
           command: npx jest --coverage
 
       - store_artifacts:
