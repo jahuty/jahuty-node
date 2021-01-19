@@ -26,23 +26,19 @@ jobs:
             - ~/.cache/npm
 
       - run:
+          name: Run tests with coverage
           name: test
-          command: npm test
+          command: npx jest --coverage
 
-      #- run:
-      #    name: code-coverage
-      #    command: './node_modules/.bin/nyc report --reporter=text-lcov'
+      - store_artifacts:
+         path: test-results.xml
+         prefix: tests
 
-      #- store_artifacts:
-      #    # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-      #    path: test-results.xml
-      #    prefix: tests
+      - store_artifacts:
+         path: coverage
+         prefix: coverage
 
-      #- store_artifacts: # for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-      #    path: coverage
-      #    prefix: coverage
-
-      #- store_test_results: # for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
-      #    path: test-results.xml
+      - store_test_results:
+         path: test-results.xml
 
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
