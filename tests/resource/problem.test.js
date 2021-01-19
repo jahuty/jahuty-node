@@ -1,8 +1,8 @@
-import Problem from './../../src/resource/problem';
+import Problem from '../../src/resource/problem';
 
 describe('Problem', () => {
   const status = 1;
-  const type   = 'foo';
+  const type = 'foo';
   const detail = 'bar';
 
   const problem = new Problem({ status, type, detail });

@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/jahuty/jahuty-node.svg?style=svg)](https://circleci.com/gh/jahuty/jahuty-node)
+[![CircleCI](https://circleci.com/gh/jahuty/jahuty-node.svg?style=svg)](https://circleci.com/gh/jahuty/jahuty-node) [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 
 # jahuty-node
 

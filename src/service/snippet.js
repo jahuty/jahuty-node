@@ -1,4 +1,4 @@
-import Show from './../action/show';
+import Show from '../action/show';
 import Base from './base';
 
 import 'regenerator-runtime/runtime';
@@ -11,11 +11,11 @@ export default class Snippet extends Base {
     super({ client });
   }
 
-  async render(id, options = {}) {
+  render(id, options = {}) {
     const params = 'params' in options ? options.params : {};
 
-    const action = new Show({ id: id, resource: 'render', params: params });
+    const action = new Show({ id, resource: 'render', params });
 
-    return await this.client.request(action);
+    return this.client.request(action);
   }
 }

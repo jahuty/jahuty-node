@@ -1,4 +1,4 @@
-import Base from './../../src/service/base';
+import Base from '../../src/service/base';
 
 describe('Base', () => {
   describe('.client', () => {

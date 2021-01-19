@@ -1,9 +1,9 @@
-import Show from './../../src/action/show';
+import Show from '../../src/action/show';
 
 describe('Show', () => {
   const resource = 'foo';
-  const id       = 1;
-  const params   = { bar: 'baz' };
+  const id = 1;
+  const params = { bar: 'baz' };
 
   const action = new Show({ resource, id, params });
 

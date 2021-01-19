@@ -6,7 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* Add [ESLint](https://eslint.org) static code analysis based on [AirBnb's JavaScript Style Guide](https://github.com/airbnb/javascript#table-of-contents).
+
+### Changed
+
 * Change from a static-based architecture (e.g., `Snippet.render(1)`) to an instance-based one (e.g., `jahuty.snippets.render(1)`) to make the library easier to develop, test, and use.
+
 
 ## 0.1.6 - 2020-11-02
 

@@ -1,4 +1,4 @@
-import Render from './../../src/resource/render';
+import Render from '../../src/resource/render';
 
 describe('Snippet', () => {
   const content = 'foo';

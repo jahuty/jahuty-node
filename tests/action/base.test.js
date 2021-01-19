@@ -1,8 +1,8 @@
-import Base from './../../src/action/base';
+import Base from '../../src/action/base';
 
 describe('Base', () => {
   const resource = 'foo';
-  const params   = { bar: 'baz' };
+  const params = { bar: 'baz' };
 
   const base = new Base({ resource, params });
 

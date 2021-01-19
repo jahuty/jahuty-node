@@ -1,9 +1,9 @@
-import Request from './../../src/request/request';
+import Request from '../../src/request/request';
 
 describe('Request', () => {
-  const method  = 'foo';
-  const path    = 'bar';
-  const params  = { baz: 'qux' };
+  const method = 'foo';
+  const path = 'bar';
+  const params = { baz: 'qux' };
 
   const request = new Request({ method, path, params });
 

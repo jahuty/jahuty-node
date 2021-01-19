@@ -17,16 +17,14 @@ export default class Client {
   }
 
   async request(action) {
-    if (this.requests === undefined) this.requests = new RequestFactory();
+    const request = RequestFactory.create({ action });
 
-    const request = this.requests.create({ action });
-
-    if (this.client === undefined) this.client = new ApiClient({ apiKey: this.apiKey });
+    if (this.client === undefined) {
+      this.client = new ApiClient({ apiKey: this.apiKey });
+    }
 
     const response = await this.client.send(request);
 
-    if (this.resources === undefined) this.resources = new ResourceFactory();
-
-    return this.resources.create({ action, response });
+    return ResourceFactory.create({ action, response });
   }
 }

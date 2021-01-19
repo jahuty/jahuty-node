@@ -1,15 +1,28 @@
-import Factory from './../../src/resource/factory';
-import Render from './../../src/resource/render';
-import Show from './../../src/action/show';
+import Base from '../../src/action/base';
+import Factory from '../../src/resource/factory';
+import Render from '../../src/resource/render';
+import Show from '../../src/action/show';
 
 describe('Factory', () => {
-  let factory  = new Factory();
-  let action   = new Show({ resource: 'render', id: 1 });
-  let response = { data: { "content": "foo" } }
+  const response = { data: { content: 'foo' } };
 
-  describe('.create', () => {
-    it('returns resource', () => {
-      expect(factory.create({ action, response })).toBeInstanceOf(Render);
+  describe('::create', () => {
+    describe('when action is not show-render', () => {
+      const action = new Base({ resource: 'foo' });
+
+      it('raises error', () => {
+        expect(() => {
+          Factory.create({ action, response });
+        }).toThrow(TypeError);
+      });
+    });
+
+    describe('when action is show-render', () => {
+      const action = new Show({ resource: 'render', id: 1 });
+
+      it('returns resource', () => {
+        expect(Factory.create({ action, response })).toBeInstanceOf(Render);
+      });
     });
   });
 });

@@ -1,20 +1,20 @@
-import Client from './../../src/client';
-import Show from './../../src/action/show';
-import Snippet from './../../src/service/snippet';
+import Client from '../../src/client';
+import Show from '../../src/action/show';
+import Snippet from '../../src/service/snippet';
 
 jest.mock('./../../src/client');
 beforeEach(() => { jest.clearAllMocks(); });
 
 describe('Snippet', () => {
   describe('.render', () => {
-    const client  = new Client({ apiKey: 'foo' });
-    const service = new Snippet({ client: client });
+    const client = new Client({ apiKey: 'foo' });
+    const service = new Snippet({ client });
 
     describe('when params do not exist', () => {
       beforeEach(() => { service.render(1); });
 
       it('requests action', () => {
-        expect(client.request.mock.calls.length).toBe(1);
+        expect(client.request.mock.calls).toHaveLength(1);
       });
 
       it('uses empty params', () => {
@@ -24,11 +24,11 @@ describe('Snippet', () => {
       });
     });
 
-    describe('when params do not exist', () => {
+    describe('when params do exist', () => {
       beforeEach(() => { service.render(1, { params: { foo: 'bar' } }); });
 
       it('requests action', () => {
-        expect(client.request.mock.calls.length).toBe(1);
+        expect(client.request.mock.calls).toHaveLength(1);
       });
 
       it('uses passed params', () => {
@@ -38,4 +38,4 @@ describe('Snippet', () => {
       });
     });
   });
-})
+});

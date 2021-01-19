@@ -1,4 +1,4 @@
-import Jahuty from './../src/jahuty';
+import Jahuty from '../src/jahuty';
 
 describe('Jahuty', () => {
   // describe('::initialize()', () => {
