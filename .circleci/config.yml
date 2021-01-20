@@ -9,35 +9,41 @@ jobs:
 
       - run:
          name: update-npm
-         command: 'sudo npm install -g npm@latest'
+         command: 'sudo npm ci -g npm@latest'
 
       - restore_cache:
-          name: Restore NPM Package Cache
+          name: Restore NPM package cache
           keys:
-            - npm-packages-{{ checksum "packages.lock" }}
+            - npm-packages-{{ checksum "package.json" }}
       - run:
-          name: Install Dependencies
+          name: Install dependencies
           command: npm install --frozen-lockfile
 
       - save_cache:
-          name: Save NPM Package Cache
-          key: npm-packages-{{ checksum "packages.lock" }}
+          name: Save NPM package cache
+          key: npm-packages-{{ checksum "package.json" }}
           paths:
             - ~/.cache/npm
 
       - run:
+          name: Run static code analysis
+          command: npx eslint .
+
+      - run:
           name: Run tests with coverage
-          command: npx jest --coverage
+          # The --runInBand flag is recommended by CircleCI to reduce memory
+          # issues, it's recommended by Jest for easier debugging.
+          # See https://circleci.com/docs/2.0/collect-test-data/#jest for details.
+          command: npx jest --runInBand --coverage
+
+      # - store_artifacts:
+      #     path: test-results.xml
+      #     prefix: tests
 
       - store_artifacts:
-         path: test-results.xml
-         prefix: tests
+          name: Uploading coverage report
+          path: coverage
+          prefix: coverage
 
-      - store_artifacts:
-         path: coverage
-         prefix: coverage
-
-      - store_test_results:
-         path: test-results.xml
-
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+      # - store_test_results:
+      #    path: test-results.xml
