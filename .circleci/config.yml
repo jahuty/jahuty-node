@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/snippets-js
+    working_directory: ~/jahuty-node
     docker:
       - image: circleci/node:12.1.0
     steps:
@@ -9,7 +9,7 @@ jobs:
 
       - run:
          name: update-npm
-         command: 'sudo npm ci -g npm@latest'
+         command: 'sudo npm ci npm@latest'
 
       - restore_cache:
           name: Restore NPM package cache
