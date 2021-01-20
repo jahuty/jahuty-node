@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.1.3
 jobs:
   build:
     working_directory: ~/jahuty-node
@@ -47,3 +49,6 @@ jobs:
 
       # - store_test_results:
       #    path: test-results.xml
+
+      - codecov/upload:
+          file: coverage/clover.xml
