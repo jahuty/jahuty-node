@@ -3,7 +3,6 @@ import Show from '../../src/action/show';
 import Snippet from '../../src/service/snippet';
 
 jest.mock('./../../src/client');
-beforeEach(() => { jest.clearAllMocks(); });
 
 describe('Snippet', () => {
   describe('.render', () => {

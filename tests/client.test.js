@@ -5,7 +5,6 @@ import Show from '../src/action/show';
 import Snippet from '../src/service/snippet';
 
 jest.mock('axios');
-beforeEach(() => { jest.clearAllMocks(); });
 
 describe('Client', () => {
   const client = new Client({ apiKey: 'foo' });
