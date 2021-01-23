@@ -4,10 +4,20 @@ import Show from '../../src/action/show';
 
 describe('Factory', () => {
   describe('::create', () => {
-    const action = new Show({ resource: 'render', id: 1 });
+    describe('when action is supported', () => {
+      const action = new Show({ resource: 'render', id: 1 });
 
-    it('returns request', () => {
-      expect(Factory.create({ action })).toBeInstanceOf(Request);
+      it('returns request', () => {
+        expect(Factory.create({ action })).toBeInstanceOf(Request);
+      });
+    });
+
+    describe('when action is not supported', () => {
+      const action = new Show({ resource: 'foo', id: 1 });
+
+      it('throws error', () => {
+        expect(() => Factory.create({ action })).toThrow(TypeError);
+      });
     });
   });
 });
