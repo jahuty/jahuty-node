@@ -1,23 +1,22 @@
-import axios from 'axios';
+import Axios from 'axios';
 import Client from '../src/client';
+import MockAdapter from 'axios-mock-adapter';
 import Render from '../src/resource/render';
 import Show from '../src/action/show';
 import Snippet from '../src/service/snippet';
 
-jest.mock('axios');
+const mock = new MockAdapter(Axios);
 
 describe('Client', () => {
   const client = new Client({ apiKey: 'foo' });
 
-  beforeEach(() => { axios.create.mockImplementationOnce(() => axios); });
-
   describe('.request', () => {
     describe('when the response is success', () => {
       const action = new Show({ resource: 'render', id: 1 });
-      const response = { data: { content: 'foo' } };
+      const payload = { content: '<p>foo</p>' };
 
       beforeEach(() => {
-        axios.request.mockImplementationOnce(() => Promise.resolve(response));
+        mock.onGet('/snippets/1/render').reply(200, payload);
       });
 
       it('returns render', async () => {
