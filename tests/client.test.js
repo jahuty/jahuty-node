@@ -1,6 +1,6 @@
 import Axios from 'axios';
-import Client from '../src/client';
 import MockAdapter from 'axios-mock-adapter';
+import Client from '../src/client';
 import Render from '../src/resource/render';
 import Show from '../src/action/show';
 import Snippet from '../src/service/snippet';
