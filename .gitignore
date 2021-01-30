@@ -1,5 +1,7 @@
+.DS_store
+coverage
 node_modules
 build
+lib
 npm-debug.log
-package-lock.json
 dist

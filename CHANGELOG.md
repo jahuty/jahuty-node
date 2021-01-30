@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## 0.2.0 - 2020-01-28
+
+* Change from a static-based architecture (e.g., `Snippet.render(1)`) to an instance-based one (e.g., `jahuty.snippets.render(1)`) to make the library easier to develop, test, and use.
+* Move web-based functionality to a separate repository to separate concerns.
+* Change `.npmignore` to be a whitelist and reduce the files in the NPM package.
+* Add [ESLint](https://eslint.org) static code analysis based on [AirBnb's JavaScript Style Guide](https://github.com/airbnb/javascript#table-of-contents).
+* Add [Codecov](https://codecov.io/gh/jahuty/jahuty-node) code coverage analysis.
+
 ## 0.1.6 - 2020-11-02
 
 * Update README with requirements, installation, usage, errors, and more.
