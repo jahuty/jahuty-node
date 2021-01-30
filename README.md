@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/jahuty/jahuty-node.svg?style=svg)](https://circleci.com/gh/jahuty/jahuty-node) [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
+[![CircleCI](https://circleci.com/gh/jahuty/jahuty-node.svg?style=svg)](https://circleci.com/gh/jahuty/jahuty-node) [![codecov](https://codecov.io/gh/jahuty/jahuty-node/branch/master/graph/badge.svg?token=3NBRW34P6N)](https://codecov.io/gh/jahuty/jahuty-node) [![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 
 # jahuty-node
 
@@ -6,7 +6,7 @@ The Node.js SDK provides convenient access to the [Jahuty API](https://docs.jahu
 
 ## Requirements
 
-This library requires Node 14.
+This library requires Node 10+. It may work with earlier versions but has not been tested.
 
 ## Installation
 
@@ -18,24 +18,36 @@ npm install jahuty --save
 yarn add jahuty
 ```
 
+## Syntax
+
+This package is written using ES6 syntax and transpiled to CommonJS for maximum compatibility.
+
 ## Usage
 
-The package needs to be configured with your account's [API key](https://docs.jahuty.com/api#authentication) using the `setKey` method. Then, you can use the `Snippet.render()` method, which returns a `Promise`, to render a snippet:
+The package needs to be configured with your account's [API key](https://docs.jahuty.com/api#authentication) before using the `snippets.render()` method to render a snippet:
 
 ```js
-var { Jahuty, Snippet }  = require('@jahuty/jahuty');
+const Client = require('@jahuty/jahuty').default;
 
-Jahuty.setKey('YOUR_API_KEY');
+const jahuty = new Client({ apiKey: YOUR_API_KEY });
 
-Snippet.render(YOUR_SNIPPET_ID).then(render => console.log(render.content));
+const render = await jahuty.snippets.render(YOUR_SNIPPET_ID);
+
+console.log(render.content);
 ```
 
-You can [pass parameters](https://www.jahuty.com/docs/passing-a-parameter) into your snippet using the options hash and the params key:
+You can [pass parameters](https://docs.jahuty.com/liquid/parameters) into your snippet using the options hash and the params key:
 
 ```js
-Snippet.render(YOUR_SNIPPET_ID, { params: { foo: "bar" }}).then(
-  render => console.log(render.content)
-);
+const Client = require('@jahuty/jahuty').default;
+
+const jahuty = new Client({ apiKey: YOUR_API_KEY });
+
+const render = await jahuty.snippets.render(YOUR_SNIPPET_ID, {
+  params: { foo: "bar" },
+});
+
+console.log(render.content);
 ```
 
 The parameters above would be equivalent to [assigning the variables](https://www.jahuty.com/docs/assigning-a-variable) below in your snippet:
@@ -46,23 +58,27 @@ The parameters above would be equivalent to [assigning the variables](https://ww
 
 ## Errors
 
-If you don't set your API key before calling `Snippet.render()`, an `Error` will be thrown. If [Jahuty's API](https://www.jahuty.com/docs/api) returns any status code other than `2xx`, a `NotOk` exception will be thrown:
+If [Jahuty's API](https://docs.jahuty.com/api) returns an error, a `BadResponse` error will be thrown:
 
 ```js
-var { Snippet }  = require('@jahuty/jahuty');
+const Client = require('@jahuty/jahuty').default;
 
-Snippet.render(YOUR_SNIPPET_ID, { params: { foo: "bar" }})
-  .then(render => console.log(render.content))
-  .catch(error => {
-    if (error instanceof NotOk) {
-      // The API returned something besides 2xx status code. The error contains
-      // a problem property with more information.
-      console.error(error.problem);
-    } else if (error instanceof Error) {
-      // Something else went wrong. Perhaps the key is not set?
-      console.error(error.message);
-    }
+const jahuty = new Client({ apiKey: YOUR_API_KEY });
+
+try {
+  const render = await jahuty.snippets.render(YOUR_SNIPPET_ID, {
+    params: { foo: "bar" },
   });
+} catch (error) {
+  if ('problem' in error) {
+    // The API returned something besides 2xx status code. The error contains
+    // a problem property with more information.
+    console.error(error.problem);
+  } else {
+    // Something else went wrong. Perhaps the key is not set?
+    console.error(error.message);
+  }
+}
 ```
 
 ## License
