@@ -1,9 +1,14 @@
 {
   "name": "@jahuty/jahuty",
   "version": "0.2.0",
-  "description": "",
+  "description": "Jahuty's Node.js SDK",
   "main": "./lib/client.js",
-  "author": "",
+  "author": [
+    {
+      "name": "Jahuty and contributors",
+      "homepage": "https://github.com/jahuty/jahuty-node/contributors"
+    }
+  ],
   "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.12.10",
