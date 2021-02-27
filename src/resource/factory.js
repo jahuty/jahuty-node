@@ -10,6 +10,6 @@ export default class Factory {
       throw new TypeError('Action expected to be show render');
     }
 
-    return new Render.from(response.data);
+    return Render.from(response.data);
   }
 }
