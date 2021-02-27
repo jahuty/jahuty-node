@@ -1,4 +1,4 @@
 export default class Jahuty {}
 
 Jahuty.BASE_URL = 'https://api.jahuty.com';
-Jahuty.VERSION = '0.2.0';
+Jahuty.VERSION = '0.2.1';
