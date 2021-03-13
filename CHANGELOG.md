@@ -4,11 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 0.2.1 - 2020-02-27
+## 0.3.0 - 2021-03-13
+
+- Fixed issue where the `render` method's `params` were not being json-encoded properly.
+- Added support for caching. Supported cache implementations should implement a `get(key)` method, which returns a `Promise`, as well as a `set(key, value, ttl)` method. If no cache implementation argument is given, an in-memory cache will be used.
+- Added collections via the `allRenders` method which retrieves a group of renders and caches them individually.
+
+## 0.2.1 - 2021-02-27
 
 - Change resources to accept and silently ignore unknown attributes returned by the API to permit API evolution.
 
-## 0.2.0 - 2020-01-28
+## 0.2.0 - 2021-01-28
 
 * Change from a static-based architecture (e.g., `Snippet.render(1)`) to an instance-based one (e.g., `jahuty.snippets.render(1)`) to make the library easier to develop, test, and use.
 * Move web-based functionality to a separate repository to separate concerns.
