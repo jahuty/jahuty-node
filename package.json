@@ -1,6 +1,6 @@
 {
   "name": "@jahuty/jahuty",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Jahuty's Node.js SDK",
   "main": "./lib/client.js",
   "author": [
@@ -30,6 +30,8 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "deepmerge": "^4.2.2",
+    "keyv": "^4.0.3",
     "regenerator-runtime": "^0.13.7"
   }
 }

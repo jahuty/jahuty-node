@@ -13,7 +13,7 @@ describe('Client', () => {
   describe('.request', () => {
     describe('when the response is success', () => {
       const action = new Show({ resource: 'render', id: 1 });
-      const payload = { content: '<p>foo</p>' };
+      const payload = { snippet_id: 1, content: '<p>foo</p>' };
 
       beforeEach(() => {
         mock.onGet('/snippets/1/render').reply(200, payload);

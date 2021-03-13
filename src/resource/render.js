@@ -2,8 +2,9 @@
  * A snippet's render.
  */
 export default class Render {
-  constructor({ content }) {
+  constructor({ content, snippetId }) {
     this.content = content;
+    this.snippetId = snippetId;
   }
 
   static from(payload) {
@@ -11,7 +12,14 @@ export default class Render {
       throw new Error("Payload missing 'content' key");
     }
 
-    return new Render({ content: payload.content });
+    if (!('snippet_id' in payload)) {
+      throw new Error("Payload missing 'snippet_id' key");
+    }
+
+    return new Render({
+      content: payload.content,
+      snippetId: payload.snippet_id,
+    });
   }
 
   toString() {
