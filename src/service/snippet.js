@@ -1,7 +1,9 @@
 import crypto from 'crypto';
+import merge from 'deepmerge';
 
-import Show from '../action/show';
 import Base from './base';
+import Index from '../action/index';
+import Show from '../action/show';
 
 import 'regenerator-runtime/runtime';
 
@@ -14,6 +16,18 @@ export default class Snippet extends Base {
 
     this.cache = cache;
     this.ttl = ttl;
+  }
+
+  async allRenders(tag, options = {}) {
+    const params = 'params' in options ? options.params : {};
+
+    const ttl = 'ttl' in options ? options.ttl : this.ttl;
+
+    const renders = await this.indexRenders({ tag, params });
+
+    this.cacheRenders({ renders, params, ttl });
+
+    return renders;
   }
 
   async render(snippetId, options = {}) {
@@ -44,5 +58,38 @@ export default class Snippet extends Base {
     const hash = crypto.createHash('md5').update(slug).digest('hex');
 
     return `jahuty_${hash}`;
+  }
+
+  cacheRenders({ renders, params, ttl }) {
+    const globalParams = '*' in params ? params['*'] : {};
+
+    renders.forEach((render) => {
+      const paramsKey = `${render.snippetId}`;
+
+      const localParams = paramsKey in params ? params[paramsKey] : {};
+
+      const renderParams = merge(globalParams, localParams);
+
+      const cacheKey = Snippet.getRenderCacheKey({
+        snippetId: render.snippetId,
+        params: renderParams,
+      });
+
+      this.cache.set(cacheKey, render, ttl);
+    });
+  }
+
+  async indexRenders({ tag, params }) {
+    const reqParams = { tag };
+
+    if (params !== null) {
+      reqParams.params = JSON.stringify(params);
+    }
+
+    const action = new Index({ resource: 'render', reqParams });
+
+    const renders = await this.client.request(action);
+
+    return renders;
   }
 }
