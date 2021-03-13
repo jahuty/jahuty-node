@@ -2,8 +2,9 @@ import Render from '../../src/resource/render';
 
 describe('Snippet', () => {
   const content = 'foo';
+  const snippetId = 1;
 
-  const render = new Render({ content });
+  const render = new Render({ content, snippetId });
 
   describe('.content', () => {
     it('returns content', () => {
@@ -15,7 +16,13 @@ describe('Snippet', () => {
     let params;
 
     beforeEach(() => {
-      params = { content: 'foo' };
+      params = { snippet_id: 1, content: 'foo' };
+    });
+
+    it('rasies error when snippet_id is missing', () => {
+      delete params.snippet_id;
+
+      expect(() => Render.from(params)).toThrow(Error);
     });
 
     it('rasies error when content is missing', () => {

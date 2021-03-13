@@ -18,7 +18,7 @@ describe('Factory', () => {
 
     describe('when response is render', () => {
       const action = new Show({ resource: 'render', id: 1 });
-      const response = { data: { content: 'foo' } };
+      const response = { data: { snippet_id: 1, content: 'foo' } };
 
       it('returns resource', () => {
         expect(Factory.create({ action, response })).toBeInstanceOf(Render);
@@ -27,7 +27,12 @@ describe('Factory', () => {
 
     describe('when response is renders', () => {
       const action = new Index({ resource: 'render', id: 1 });
-      const response = { data: [{ content: 'foo' }, { content: 'bar' }] };
+      const response = {
+        data: [
+          { snippet_id: 1, content: 'foo' },
+          { snippet_id: 2, content: 'bar' },
+        ],
+      };
 
       it('returns array', () => {
         expect(Factory.create({ action, response })).toBeInstanceOf(Array);
