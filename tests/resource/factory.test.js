@@ -1,14 +1,13 @@
-import Base from '../../src/action/base';
 import Factory from '../../src/resource/factory';
 import Render from '../../src/resource/render';
+import Index from '../../src/action/index';
 import Show from '../../src/action/show';
 
 describe('Factory', () => {
-  const response = { data: { content: 'foo' } };
-
   describe('::create', () => {
-    describe('when action is not show-render', () => {
-      const action = new Base({ resource: 'foo' });
+    describe('when resource is not render', () => {
+      const action = { resource: 'foo' };
+      const response = { data: { content: 'foo' } };
 
       it('raises error', () => {
         expect(() => {
@@ -17,11 +16,21 @@ describe('Factory', () => {
       });
     });
 
-    describe('when action is show-render', () => {
+    describe('when response is render', () => {
       const action = new Show({ resource: 'render', id: 1 });
+      const response = { data: { content: 'foo' } };
 
       it('returns resource', () => {
         expect(Factory.create({ action, response })).toBeInstanceOf(Render);
+      });
+    });
+
+    describe('when response is renders', () => {
+      const action = new Index({ resource: 'render', id: 1 });
+      const response = { data: [{ content: 'foo' }, { content: 'bar' }] };
+
+      it('returns array', () => {
+        expect(Factory.create({ action, response })).toBeInstanceOf(Array);
       });
     });
   });

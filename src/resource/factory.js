@@ -1,15 +1,22 @@
 import Render from './render';
-import Show from '../action/show';
 
 /**
- * Builds a resource given an action and response.
+ * Builds a resource (or collection) given an action and response.
  */
 export default class Factory {
   static create({ action, response }) {
-    if (!(action instanceof Show) || action.resource !== 'render') {
-      throw new TypeError('Action expected to be show render');
+    if (action.resource !== 'render') {
+      throw new TypeError('Resource is not render');
     }
 
-    return Render.from(response.data);
+    let result;
+
+    if (Array.isArray(response.data)) {
+      result = response.data.map((data) => Render.from(data));
+    } else {
+      result = Render.from(response.data);
+    }
+
+    return result;
   }
 }
