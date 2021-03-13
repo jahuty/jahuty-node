@@ -38,7 +38,16 @@ export default class Snippet extends Base {
     let render = await this.cache.get(key);
 
     if (!render) {
-      const action = new Show({ id: snippetId, resource: 'render', params });
+      const requestParams = {};
+      if (params) {
+        requestParams.params = JSON.stringify(params);
+      }
+
+      const action = new Show({
+        id: snippetId,
+        resource: 'render',
+        params: requestParams,
+      });
 
       render = this.client.request(action);
 

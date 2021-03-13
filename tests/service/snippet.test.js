@@ -145,7 +145,11 @@ describe('Snippet', () => {
       });
 
       it('uses passed params', () => {
-        const action = new Show({ id: 1, resource: 'render', params: { foo: 'bar' } });
+        const action = new Show({
+          id: 1,
+          resource: 'render',
+          params: { params: '{"foo":"bar"}' },
+        });
 
         expect(client.request.mock.calls[0][0]).toMatchObject(action);
       });
