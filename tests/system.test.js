@@ -26,13 +26,13 @@ describe('System', () => {
     it('renders the snippet', async () => {
       const params = { foo: 'foo', bar: 'bar' };
 
-      const render = await jahuty.snippets.render(62, { params: params });
+      const render = await jahuty.snippets.render(62, { params });
 
       expect(render.content).toBe(render62.content);
 
       // A second render with the same params should use the cached value.
       let start = new Date();
-      await jahuty.snippets.render(62, { params: params });
+      await jahuty.snippets.render(62, { params });
       let end = new Date();
 
       expect(end.getTime() - start.getTime()).toBeLessThan(5);
@@ -41,7 +41,7 @@ describe('System', () => {
       params.bar = 'baz';
 
       start = new Date();
-      await jahuty.snippets.render(62, { params: params });
+      await jahuty.snippets.render(62, { params });
       end = new Date();
 
       expect(end.getTime() - start.getTime()).toBeGreaterThan(5);
@@ -52,7 +52,7 @@ describe('System', () => {
     it('renders the snippets', async () => {
       // This request should return two renders.
       const renders = await jahuty.snippets.allRenders('test', {
-        params: { '*': { foo: 'foo' }, '62': { bar: 'bar' } }
+        params: { '*': { foo: 'foo' }, 62: { bar: 'bar' } },
       });
 
       expect(renders).toHaveLength(2);
