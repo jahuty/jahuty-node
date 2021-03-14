@@ -57,6 +57,31 @@ describe('Snippet', () => {
       });
     });
 
+    describe('when ttl is zero', () => {
+      const cache = new Keyv();
+
+      // mock the client's request method to return a collection of renders
+      const client = new Client({ apiKey: 'foo' });
+      client.request.mockResolvedValue([
+        new Render({ snippetId: 1, content: 'foo' }),
+        new Render({ snippetId: 2, content: 'bar' }),
+      ]);
+
+      const service = new Snippet({ client, cache });
+
+      it('does not write to cache', async () => {
+        await service.allRenders('foo', { ttl: 0 });
+
+        expect(cache.set.mock.calls).toHaveLength(0);
+      });
+
+      it('returns array', async () => {
+        const renders = await service.allRenders('foo', { ttl: 0 });
+
+        expect(renders).toHaveLength(2);
+      });
+    });
+
     describe('when params do exist', () => {
       const cache = new Keyv();
 
@@ -111,6 +136,23 @@ describe('Snippet', () => {
 
       it('caches render', async () => {
         expect(cache.set.mock.calls).toHaveLength(1);
+      });
+    });
+
+    describe('when ttl is zero', () => {
+      // mock a cache miss
+      const cache = new Keyv();
+      const client = new Client({ apiKey: 'foo' });
+      const service = new Snippet({ client, cache });
+
+      beforeEach(async () => { await service.render(1, { ttl: 0 }); });
+
+      it('requests action', async () => {
+        expect(client.request.mock.calls).toHaveLength(1);
+      });
+
+      it('does not cache render', async () => {
+        expect(cache.set.mock.calls).toHaveLength(0);
       });
     });
 
