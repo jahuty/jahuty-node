@@ -91,13 +91,13 @@ export default class Snippet extends Base {
   }
 
   async indexRenders({ tag, params }) {
-    const reqParams = { tag };
+    const requestParams = { tag };
 
     if (params !== null) {
-      reqParams.params = JSON.stringify(params);
+      requestParams.params = JSON.stringify(params);
     }
 
-    const action = new Index({ resource: 'render', reqParams });
+    const action = new Index({ resource: 'render', params: requestParams });
 
     const renders = await this.client.request(action);
 
