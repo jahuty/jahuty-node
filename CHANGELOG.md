@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.3.1 - 2020-03-14
+
+### Added
+
+- Added support for zero and negative `ttl` values to disable cache.
+- Added system tests for cached, parameterized, and tagged snippets.
+
+### Fixed
+
+- Fixed bad build in NPM because Jack forgot to build before release :(
+- Fixed issue with the `allRenders()` method not sending query string parameters.
+
 ## 0.3.0 - 2021-03-13
 
 - Fixed issue where the `render` method's `params` were not being json-encoded properly.

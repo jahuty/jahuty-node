@@ -20,18 +20,20 @@ export default class Snippet extends Base {
 
   async allRenders(tag, options = {}) {
     const params = 'params' in options ? options.params : {};
-
     const ttl = 'ttl' in options ? options.ttl : this.ttl;
 
     const renders = await this.indexRenders({ tag, params });
 
-    this.cacheRenders({ renders, params, ttl });
+    if (ttl === null || ttl > 0) {
+      this.cacheRenders({ renders, params, ttl });
+    }
 
     return renders;
   }
 
   async render(snippetId, options = {}) {
     const params = 'params' in options ? options.params : {};
+    const ttl = 'ttl' in options ? options.ttl : this.ttl;
 
     const key = Snippet.getRenderCacheKey({ snippetId, params });
 
@@ -51,9 +53,9 @@ export default class Snippet extends Base {
 
       render = this.client.request(action);
 
-      const ttl = 'ttl' in options ? options.ttl : this.ttl;
-
-      this.cache.set(key, render, ttl);
+      if (ttl === null || ttl > 0) {
+        this.cache.set(key, render, ttl);
+      }
     }
 
     return render;
@@ -89,13 +91,13 @@ export default class Snippet extends Base {
   }
 
   async indexRenders({ tag, params }) {
-    const reqParams = { tag };
+    const requestParams = { tag };
 
     if (params !== null) {
-      reqParams.params = JSON.stringify(params);
+      requestParams.params = JSON.stringify(params);
     }
 
-    const action = new Index({ resource: 'render', reqParams });
+    const action = new Index({ resource: 'render', params: requestParams });
 
     const renders = await this.client.request(action);
 
