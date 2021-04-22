@@ -13,9 +13,9 @@ This library requires Node 10+. It may work with earlier versions but has not be
 Install the package with:
 
 ```
-npm install jahuty --save
+npm install @jahuty/jahuty --save
 # or
-yarn add jahuty
+yarn add @jahuty/jahuty
 ```
 
 ## Syntax
