@@ -51,7 +51,7 @@ export default class Snippet extends Base {
         params: requestParams,
       });
 
-      render = this.client.request(action);
+      render = await this.client.request(action);
 
       if (ttl === null || ttl > 0) {
         this.cache.set(key, render, ttl);
