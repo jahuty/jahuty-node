@@ -9,16 +9,18 @@ describe('System', () => {
 
   describe('when the user renders a static snippet', () => {
     it('renders the snippet', async () => {
-      const render = await jahuty.snippets.render(1);
+      let render = await jahuty.snippets.render(1);
 
       expect(render.content).toBe(render1.content);
 
       // A second render should use the cached value.
       const start = new Date().getTime();
-      await jahuty.snippets.render(1);
+      render = await jahuty.snippets.render(1);
       const end = new Date().getTime();
 
       expect(end - start).toBeLessThan(5);
+      // Verify the content is correct (see #26 for details).
+      expect(render.content).toBe(render1.content);
     });
   });
 
