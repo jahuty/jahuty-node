@@ -196,6 +196,25 @@ describe('Snippet', () => {
         expect(client.request.mock.calls[0][0]).toMatchObject(action);
       });
     });
+
+    describe('with preferLatest', () => {
+      // mock a cache miss
+      const cache = new Keyv();
+      const client = new Client({ apiKey: 'foo' });
+      const service = new Snippet({ client, cache });
+
+      beforeEach(async () => { await service.render(1, { preferLatest: true }); });
+
+      it('requests action', () => {
+        expect(client.request.mock.calls).toHaveLength(1);
+      });
+
+      it('has latest flag', () => {
+        const action = new Show({ id: 1, resource: 'render', params: { latest: 1 } });
+
+        expect(client.request.mock.calls[0][0]).toMatchObject(action);
+      });
+    });
   });
 
   describe('::getRenderCacheKey', () => {

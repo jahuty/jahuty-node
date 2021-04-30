@@ -34,6 +34,7 @@ export default class Snippet extends Base {
   async render(snippetId, options = {}) {
     const params = 'params' in options ? options.params : {};
     const ttl = 'ttl' in options ? options.ttl : this.ttl;
+    const latest = 'preferLatest' in options ? options.preferLatest : false;
 
     const key = Snippet.getRenderCacheKey({ snippetId, params });
 
@@ -43,6 +44,9 @@ export default class Snippet extends Base {
       const requestParams = {};
       if (params) {
         requestParams.params = JSON.stringify(params);
+      }
+      if (latest) {
+        requestParams.latest = 1;
       }
 
       const action = new Show({
