@@ -11,7 +11,12 @@ import 'regenerator-runtime/runtime';
  * Executes requests on snippet resources.
  */
 export default class Snippet extends Base {
-  constructor({ client, cache, ttl = null, preferLatest = false }) {
+  constructor({
+    client,
+    cache,
+    ttl = null,
+    preferLatest = false,
+  }) {
     super({ client });
 
     this.cache = cache;

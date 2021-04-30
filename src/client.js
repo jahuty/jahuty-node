@@ -8,7 +8,12 @@ import ResourceFactory from './resource/factory';
 import 'regenerator-runtime/runtime';
 
 export default class Client {
-  constructor({ apiKey, cache = null, ttl = null, preferLatest = false }) {
+  constructor({
+    apiKey,
+    cache = null,
+    ttl = null,
+    preferLatest = false,
+  }) {
     this.apiKey = apiKey;
     this.cache = cache || new Keyv({ namespace: 'jahuty' });
     this.ttl = ttl;

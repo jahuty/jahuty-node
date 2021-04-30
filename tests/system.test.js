@@ -7,10 +7,10 @@ describe('System', () => {
   const render1 = { snippetId: 1, content: '<p>This is my first snippet!</p>' };
   const render62 = { snippetId: 62, content: '<p>This foo is bar.</p>' };
 
-  const publishedRender102 = { snippetId: 102, content: '<p>This content is published.</p>' }
-  const latestRender102 = { snippetId: 102, content: '<p>This content is latest.</p>' }
+  const publishedRender102 = { snippetId: 102, content: '<p>This content is published.</p>' };
+  const latestRender102 = { snippetId: 102, content: '<p>This content is latest.</p>' };
 
-  describe('user renders one snippet' , () => {
+  describe('user renders one snippet', () => {
     describe('with a static snippet', () => {
       it('renders the snippet', async () => {
         let render = await jahuty.snippets.render(1);

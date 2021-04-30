@@ -110,7 +110,7 @@ describe('Snippet', () => {
 
       const service = new Snippet({ client, cache });
 
-      beforeEach(async () => await service.allRenders('foo', { preferLatest: true }));
+      beforeEach(async () => service.allRenders('foo', { preferLatest: true }));
 
       it('requests action', () => {
         expect(client.request.mock.calls).toHaveLength(1);
