@@ -11,18 +11,35 @@ import 'regenerator-runtime/runtime';
  * Executes requests on snippet resources.
  */
 export default class Snippet extends Base {
-  constructor({ client, cache, ttl = null }) {
+  constructor({
+    client,
+    cache,
+    ttl = null,
+    preferLatest = false,
+  }) {
     super({ client });
 
     this.cache = cache;
     this.ttl = ttl;
+    this.preferLatest = preferLatest;
   }
 
   async allRenders(tag, options = {}) {
     const params = 'params' in options ? options.params : {};
     const ttl = 'ttl' in options ? options.ttl : this.ttl;
+    const preferLatest = 'preferLatest' in options ? options.preferLatest : false;
 
-    const renders = await this.indexRenders({ tag, params });
+    const requestParams = { tag };
+    if (params !== null) {
+      requestParams.params = JSON.stringify(params);
+    }
+    if (preferLatest || this.preferLatest) {
+      requestParams.latest = 1;
+    }
+
+    const action = new Index({ resource: 'render', params: requestParams });
+
+    const renders = await this.client.request(action);
 
     if (ttl === null || ttl > 0) {
       this.cacheRenders({ renders, params, ttl });
@@ -34,6 +51,7 @@ export default class Snippet extends Base {
   async render(snippetId, options = {}) {
     const params = 'params' in options ? options.params : {};
     const ttl = 'ttl' in options ? options.ttl : this.ttl;
+    const preferLatest = 'preferLatest' in options ? options.preferLatest : false;
 
     const key = Snippet.getRenderCacheKey({ snippetId, params });
 
@@ -43,6 +61,9 @@ export default class Snippet extends Base {
       const requestParams = {};
       if (params) {
         requestParams.params = JSON.stringify(params);
+      }
+      if (preferLatest || preferLatest) {
+        requestParams.latest = 1;
       }
 
       const action = new Show({
@@ -88,19 +109,5 @@ export default class Snippet extends Base {
 
       this.cache.set(cacheKey, render, ttl);
     });
-  }
-
-  async indexRenders({ tag, params }) {
-    const requestParams = { tag };
-
-    if (params !== null) {
-      requestParams.params = JSON.stringify(params);
-    }
-
-    const action = new Index({ resource: 'render', params: requestParams });
-
-    const renders = await this.client.request(action);
-
-    return renders;
   }
 }

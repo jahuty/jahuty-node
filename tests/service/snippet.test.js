@@ -1,6 +1,7 @@
 import Keyv from 'keyv';
 
 import Client from '../../src/client';
+import Index from '../../src/action/index';
 import Show from '../../src/action/show';
 import Snippet from '../../src/service/snippet';
 import Render from '../../src/resource/render';
@@ -98,6 +99,29 @@ describe('Snippet', () => {
         expect(cache.set.mock.calls).toHaveLength(1);
       });
     });
+
+    describe('when preferLatest does exist', () => {
+      const cache = new Keyv();
+
+      const client = new Client({ apiKey: 'foo' });
+      client.request.mockResolvedValue([
+        new Render({ snippetId: 1, content: 'foo' }),
+      ]);
+
+      const service = new Snippet({ client, cache });
+
+      beforeEach(async () => service.allRenders('foo', { preferLatest: true }));
+
+      it('requests action', () => {
+        expect(client.request.mock.calls).toHaveLength(1);
+      });
+
+      it('has latest flag', () => {
+        const action = new Index({ resource: 'render', params: { latest: 1 } });
+
+        expect(client.request.mock.calls[0][0]).toMatchObject(action);
+      });
+    });
   });
 
   describe('.render', () => {
@@ -192,6 +216,25 @@ describe('Snippet', () => {
           resource: 'render',
           params: { params: '{"foo":"bar"}' },
         });
+
+        expect(client.request.mock.calls[0][0]).toMatchObject(action);
+      });
+    });
+
+    describe('when preferLatest exists', () => {
+      // mock a cache miss
+      const cache = new Keyv();
+      const client = new Client({ apiKey: 'foo' });
+      const service = new Snippet({ client, cache });
+
+      beforeEach(async () => { await service.render(1, { preferLatest: true }); });
+
+      it('requests action', () => {
+        expect(client.request.mock.calls).toHaveLength(1);
+      });
+
+      it('has latest flag', () => {
+        const action = new Show({ id: 1, resource: 'render', params: { latest: 1 } });
 
         expect(client.request.mock.calls[0][0]).toMatchObject(action);
       });
