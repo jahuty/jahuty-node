@@ -48,6 +48,30 @@ const renders = await jahuty.snippets.allRenders('YOUR_TAG');
 renders.forEach((render) => console.log(render));
 ```
 
+## Rendering content
+
+You can configure this library to render a snippet's _latest_ content to your team in _development_ and its _published_ content to your customers in _production_.
+
+By default, Jahuty will render a snippet's _published_ content, the content that existed the last time a teammate clicked the "Publish" button, to avoid exposing your creative process to customers.
+
+To render a snippet's _latest_ content, the content that currently exists in the editor, in the current environment use the `preferLatest` configuration option at the library or render level:
+
+```js
+const Client = require('@jahuty/jahuty').default;
+
+const jahuty = new Client({ apiKey: YOUR_API_KEY, preferLatest: true });
+```
+
+You can also prefer the latest content (or not) for a single render:
+
+```js
+const Client = require('@jahuty/jahuty').default;
+
+const jahuty = new Client({ apiKey: YOUR_API_KEY });
+
+const render = await jahuty.snippets.render(YOUR_SNIPPET_ID, { preferLatest: true });
+```
+
 ## Using parameters
 
 You can [pass parameters](https://docs.jahuty.com/liquid/parameters) into your snippet using the options hash and the params key:
