@@ -8,15 +8,21 @@ import ResourceFactory from './resource/factory';
 import 'regenerator-runtime/runtime';
 
 export default class Client {
-  constructor({ apiKey, cache = null, ttl = null }) {
+  constructor({ apiKey, cache = null, ttl = null, preferLatest = false }) {
     this.apiKey = apiKey;
     this.cache = cache || new Keyv({ namespace: 'jahuty' });
     this.ttl = ttl;
+    this.preferLatest = preferLatest;
   }
 
   get snippets() {
     if (this.services === undefined) {
-      this.services = new Snippet({ client: this, cache: this.cache, ttl: this.ttl });
+      this.services = new Snippet({
+        client: this,
+        cache: this.cache,
+        ttl: this.ttl,
+        preferLatest: this.preferLatest,
+      });
     }
 
     return this.services;

@@ -11,23 +11,24 @@ import 'regenerator-runtime/runtime';
  * Executes requests on snippet resources.
  */
 export default class Snippet extends Base {
-  constructor({ client, cache, ttl = null }) {
+  constructor({ client, cache, ttl = null, preferLatest = false }) {
     super({ client });
 
     this.cache = cache;
     this.ttl = ttl;
+    this.preferLatest = preferLatest;
   }
 
   async allRenders(tag, options = {}) {
     const params = 'params' in options ? options.params : {};
     const ttl = 'ttl' in options ? options.ttl : this.ttl;
-    const latest = 'preferLatest' in options ? options.preferLatest : false;
+    const preferLatest = 'preferLatest' in options ? options.preferLatest : false;
 
     const requestParams = { tag };
     if (params !== null) {
       requestParams.params = JSON.stringify(params);
     }
-    if (latest) {
+    if (preferLatest || this.preferLatest) {
       requestParams.latest = 1;
     }
 
@@ -45,7 +46,7 @@ export default class Snippet extends Base {
   async render(snippetId, options = {}) {
     const params = 'params' in options ? options.params : {};
     const ttl = 'ttl' in options ? options.ttl : this.ttl;
-    const latest = 'preferLatest' in options ? options.preferLatest : false;
+    const preferLatest = 'preferLatest' in options ? options.preferLatest : false;
 
     const key = Snippet.getRenderCacheKey({ snippetId, params });
 
@@ -56,7 +57,7 @@ export default class Snippet extends Base {
       if (params) {
         requestParams.params = JSON.stringify(params);
       }
-      if (latest) {
+      if (preferLatest || preferLatest) {
         requestParams.latest = 1;
       }
 
