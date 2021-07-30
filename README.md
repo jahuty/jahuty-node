@@ -50,11 +50,9 @@ renders.forEach((render) => console.log(render));
 
 ## Rendering content
 
-You can configure this library to render a snippet's _latest_ content to your team in _development_ and its _published_ content to your customers in _production_.
-
 By default, Jahuty will render a snippet's _published_ content, the content that existed the last time a teammate clicked the "Publish" button, to avoid exposing your creative process to customers.
 
-To render a snippet's _latest_ content, the content that currently exists in the editor, in the current environment use the `preferLatest` configuration option at the library or render level:
+You can use the `preferLatest` configuration option, however, to render the snippet's _latest_ content, the content that currently exists in the editor, in the current environment:
 
 ```js
 const Client = require('@jahuty/jahuty').default;
@@ -125,6 +123,22 @@ const renders = await jahuty.snippets.allRenders('YOUR_TAG', {
   },
 });
 ```
+
+## Tracking renders
+
+You can record where snippets are rendered using the `location` configuration option. This helps your team preview their changes, and it helps you find and replace deprecated snippets.
+
+```js
+const Client = require('@jahuty/jahuty').default;
+
+const jahuty = new Client({ apiKey: YOUR_API_KEY });
+
+const render = await jahuty.snippets.render(YOUR_SNIPPET_ID, {
+  location: 'https://example.com'
+});
+```
+
+Note, this configuration option is only supported by the `render()` method, and because locations are only reported when a request is sent to Jahuty's API, they may not be reported in all scenarios (e.g., if a call to `render` results in a cache hit).
 
 ## Caching for performance
 

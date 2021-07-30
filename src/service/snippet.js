@@ -25,15 +25,13 @@ export default class Snippet extends Base {
   }
 
   async allRenders(tag, options = {}) {
-    const params = 'params' in options ? options.params : {};
-    const ttl = 'ttl' in options ? options.ttl : this.ttl;
-    const preferLatest = 'preferLatest' in options ? options.preferLatest : false;
+    const { params, ttl, preferLatest } = this.unpackOptions(options);
 
     const requestParams = { tag };
-    if (params !== null) {
+    if (params) {
       requestParams.params = JSON.stringify(params);
     }
-    if (preferLatest || this.preferLatest) {
+    if (preferLatest) {
       requestParams.latest = 1;
     }
 
@@ -42,18 +40,26 @@ export default class Snippet extends Base {
     const renders = await this.client.request(action);
 
     if (ttl === null || ttl > 0) {
-      this.cacheRenders({ renders, params, ttl });
+      this.cacheRenders({
+        renders,
+        params,
+        ttl,
+        latest: preferLatest,
+      });
     }
 
     return renders;
   }
 
   async render(snippetId, options = {}) {
-    const params = 'params' in options ? options.params : {};
-    const ttl = 'ttl' in options ? options.ttl : this.ttl;
-    const preferLatest = 'preferLatest' in options ? options.preferLatest : false;
+    const {
+      params,
+      ttl,
+      preferLatest,
+      location,
+    } = this.unpackOptions(options);
 
-    const key = Snippet.getRenderCacheKey({ snippetId, params });
+    const key = Snippet.getRenderCacheKey({ snippetId, params, latest: preferLatest });
 
     let render = await this.cache.get(key);
 
@@ -62,8 +68,11 @@ export default class Snippet extends Base {
       if (params) {
         requestParams.params = JSON.stringify(params);
       }
-      if (preferLatest || preferLatest) {
+      if (preferLatest) {
         requestParams.latest = 1;
+      }
+      if (location) {
+        requestParams.location = location;
       }
 
       const action = new Show({
@@ -82,17 +91,26 @@ export default class Snippet extends Base {
     return render;
   }
 
-  static getRenderCacheKey({ snippetId, params }) {
+  static getRenderCacheKey({ snippetId, params, latest }) {
     const stringParams = JSON.stringify(params);
 
-    const slug = `snippets/${snippetId}/render/${stringParams}`;
+    let slug = `snippets/${snippetId}/render/${stringParams}`;
+
+    if (latest) {
+      slug += '/latest';
+    }
 
     const hash = crypto.createHash('md5').update(slug).digest('hex');
 
     return `jahuty_${hash}`;
   }
 
-  cacheRenders({ renders, params, ttl }) {
+  cacheRenders({
+    renders,
+    params,
+    ttl,
+    latest,
+  }) {
     const globalParams = '*' in params ? params['*'] : {};
 
     renders.forEach((render) => {
@@ -105,9 +123,21 @@ export default class Snippet extends Base {
       const cacheKey = Snippet.getRenderCacheKey({
         snippetId: render.snippetId,
         params: renderParams,
+        latest,
       });
 
       this.cache.set(cacheKey, render, ttl);
     });
+  }
+
+  unpackOptions(options) {
+    const defaults = {
+      params: {},
+      ttl: this.ttl,
+      preferLatest: this.preferLatest,
+      location: null,
+    };
+
+    return merge(defaults, options);
   }
 }

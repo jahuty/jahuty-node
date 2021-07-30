@@ -239,6 +239,31 @@ describe('Snippet', () => {
         expect(client.request.mock.calls[0][0]).toMatchObject(action);
       });
     });
+
+    describe('with location', () => {
+      // mock a cache miss
+      const cache = new Keyv();
+      const client = new Client({ apiKey: 'foo' });
+      const service = new Snippet({ client, cache });
+
+      beforeEach(async () => {
+        await service.render(1, { location: 'https://example.com' });
+      });
+
+      it('requests action', () => {
+        expect(client.request.mock.calls).toHaveLength(1);
+      });
+
+      it('has location param', () => {
+        const action = new Show({
+          id: 1,
+          resource: 'render',
+          params: { location: 'https://example.com' },
+        });
+
+        expect(client.request.mock.calls[0][0]).toMatchObject(action);
+      });
+    });
   });
 
   describe('::getRenderCacheKey', () => {
@@ -258,6 +283,13 @@ describe('Snippet', () => {
     it('returns unique value', () => {
       const cacheKey1 = Snippet.getRenderCacheKey({ snippetId: 1, params: { foo: 'bar' } });
       const cacheKey2 = Snippet.getRenderCacheKey({ snippetId: 1, params: { foo: 'baz' } });
+
+      expect(cacheKey1).not.toBe(cacheKey2);
+    });
+
+    it('returns different keys when one is latest', () => {
+      const cacheKey1 = Snippet.getRenderCacheKey({ snippetId: 1, params: { foo: 'bar' } });
+      const cacheKey2 = Snippet.getRenderCacheKey({ snippetId: 1, params: { foo: 'bar' }, latest: true });
 
       expect(cacheKey1).not.toBe(cacheKey2);
     });

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2021-07-30
+
+### Added
+
+- Added a `location` configuration option to the `render` method, which allows you to report the absolute URL where a snippet is being rendered.
+
+### Fixed
+
+- Fixed [#30](https://github.com/jahuty/jahuty-node/issues/30), where caching renders did not consider the content's version.
+
 ## 0.4.0 - 2021-04-30
 
 ### Added
