@@ -25,15 +25,13 @@ export default class Snippet extends Base {
   }
 
   async allRenders(tag, options = {}) {
-    const params = 'params' in options ? options.params : {};
-    const ttl = 'ttl' in options ? options.ttl : this.ttl;
-    const preferLatest = 'preferLatest' in options ? options.preferLatest : false;
+    const { params, ttl, preferLatest } = this.unpackOptions(options);
 
     const requestParams = { tag };
-    if (params !== null) {
+    if (params) {
       requestParams.params = JSON.stringify(params);
     }
-    if (preferLatest || this.preferLatest) {
+    if (preferLatest) {
       requestParams.latest = 1;
     }
 
@@ -49,9 +47,12 @@ export default class Snippet extends Base {
   }
 
   async render(snippetId, options = {}) {
-    const params = 'params' in options ? options.params : {};
-    const ttl = 'ttl' in options ? options.ttl : this.ttl;
-    const preferLatest = 'preferLatest' in options ? options.preferLatest : false;
+    const {
+      params,
+      ttl,
+      preferLatest,
+      location,
+    } = this.unpackOptions(options);
 
     const key = Snippet.getRenderCacheKey({ snippetId, params });
 
@@ -62,8 +63,11 @@ export default class Snippet extends Base {
       if (params) {
         requestParams.params = JSON.stringify(params);
       }
-      if (preferLatest || preferLatest) {
+      if (preferLatest) {
         requestParams.latest = 1;
+      }
+      if (location) {
+        requestParams.location = location;
       }
 
       const action = new Show({
@@ -109,5 +113,16 @@ export default class Snippet extends Base {
 
       this.cache.set(cacheKey, render, ttl);
     });
+  }
+
+  unpackOptions(options) {
+    const defaults = {
+      params: {},
+      ttl: this.ttl,
+      preferLatest: this.preferLatest,
+      location: null,
+    };
+
+    return Object.assign(defaults, options);
   }
 }
