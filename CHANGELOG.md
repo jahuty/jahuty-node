@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added a `location` configuration option to the `render` method, which allows you to report the absolute URL where a snippet is being rendered.
 
+### Fixed
+
+- Fixed [#30](https://github.com/jahuty/jahuty-node/issues/30), where caching renders did not consider the content's version.
+
 ## 0.4.0 - 2021-04-30
 
 ### Added

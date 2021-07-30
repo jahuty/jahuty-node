@@ -286,5 +286,12 @@ describe('Snippet', () => {
 
       expect(cacheKey1).not.toBe(cacheKey2);
     });
+
+    it('returns different keys when one is latest', () => {
+      const cacheKey1 = Snippet.getRenderCacheKey({ snippetId: 1, params: { foo: 'bar' } });
+      const cacheKey2 = Snippet.getRenderCacheKey({ snippetId: 1, params: { foo: 'bar' }, latest: true });
+
+      expect(cacheKey1).not.toBe(cacheKey2);
+    });
   });
 });

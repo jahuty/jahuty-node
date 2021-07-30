@@ -40,7 +40,12 @@ export default class Snippet extends Base {
     const renders = await this.client.request(action);
 
     if (ttl === null || ttl > 0) {
-      this.cacheRenders({ renders, params, ttl });
+      this.cacheRenders({
+        renders,
+        params,
+        ttl,
+        latest: preferLatest,
+      });
     }
 
     return renders;
@@ -54,7 +59,7 @@ export default class Snippet extends Base {
       location,
     } = this.unpackOptions(options);
 
-    const key = Snippet.getRenderCacheKey({ snippetId, params });
+    const key = Snippet.getRenderCacheKey({ snippetId, params, latest: preferLatest });
 
     let render = await this.cache.get(key);
 
@@ -86,17 +91,26 @@ export default class Snippet extends Base {
     return render;
   }
 
-  static getRenderCacheKey({ snippetId, params }) {
+  static getRenderCacheKey({ snippetId, params, latest }) {
     const stringParams = JSON.stringify(params);
 
-    const slug = `snippets/${snippetId}/render/${stringParams}`;
+    let slug = `snippets/${snippetId}/render/${stringParams}`;
+
+    if (latest) {
+      slug += '/latest';
+    }
 
     const hash = crypto.createHash('md5').update(slug).digest('hex');
 
     return `jahuty_${hash}`;
   }
 
-  cacheRenders({ renders, params, ttl }) {
+  cacheRenders({
+    renders,
+    params,
+    ttl,
+    latest,
+  }) {
     const globalParams = '*' in params ? params['*'] : {};
 
     renders.forEach((render) => {
@@ -109,6 +123,7 @@ export default class Snippet extends Base {
       const cacheKey = Snippet.getRenderCacheKey({
         snippetId: render.snippetId,
         params: renderParams,
+        latest,
       });
 
       this.cache.set(cacheKey, render, ttl);
@@ -123,6 +138,6 @@ export default class Snippet extends Base {
       location: null,
     };
 
-    return Object.assign(defaults, options);
+    return merge(defaults, options);
   }
 }
